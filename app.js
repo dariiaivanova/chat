@@ -1,12 +1,15 @@
 var express = require('express');
+var morgan = require('morgan');
 var app = express();
-app.use(express.static('/'));
-
 var config = require('config');
 var log = require('libs/log')(module);
-
+var errorHandler = require('error-handler');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 var port = config.get('port');
 app.set('port', port);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
 
 //Creating HTTP Server
 
@@ -17,6 +20,28 @@ http.createServer(app).listen(port, function(){
 
 
 //Middleware
+
+// Logger
+if(app.get('env') == 'development'){
+  app.use(morgan('dev'));
+} else {
+  app.use(morgan('common'));
+}
+
+app.use(bodyParser.urlencoded({// reads form sent with POST
+  extended:true
+}));
+app.use(bodyParser.json()); // json data  - > req.body...
+app.use(cookieParser()); // parses req.headers -> req.cookies
+
+app.get('/', function(req, res, next){// request handler
+  res.render('index', {
+    body: '<b>Hello</b>'
+  });
+});
+
+app.use(express.static('public'));
+
 
 app.use(function(req, res, next){
   if(req.url == '/'){
@@ -47,12 +72,10 @@ app.use(function(req, res){
   res.status(404).send("Page not Found");
 });
 
-
 //Error handler
   app.use(function(err, req, res, next) {
     if (app.get('env') == 'development'){
-      res.send(err.stack);
-      console.error(err.stack);
+      app.use(errorHandler())
     } else {
       res.status(500).send('Something broke!');
     }
