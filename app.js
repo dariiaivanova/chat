@@ -2,10 +2,10 @@ var express = require('express');
 var app = express();
 app.use(express.static('/'));
 
+var config = require('config');
 
 
-
-var port = 3000;
+var port = config.get('port');
 app.set('port', port);
 
 //Creating HTTP Server
