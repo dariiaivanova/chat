@@ -3,7 +3,7 @@ var app = express();
 app.use(express.static('/'));
 
 var config = require('config');
-
+var log = require('libs/log')(module);
 
 var port = config.get('port');
 app.set('port', port);
@@ -12,7 +12,7 @@ app.set('port', port);
 
 var http = require('http');
 http.createServer(app).listen(port, function(){
-  console.log("Express server is listening on port "+port);
+  log.info("Express server is listening on port "+port);
 });
 
 
