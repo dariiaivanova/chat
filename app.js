@@ -49,7 +49,6 @@ app.use(function(req, res){
 
 
 //Error handler
-
   app.use(function(err, req, res, next) {
     if (app.get('env') == 'development'){
       res.send(err.stack);
