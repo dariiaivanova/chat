@@ -1,18 +1,22 @@
 var express = require('express');
 var morgan = require('morgan');
-var app = express();
 var config = require('config');
 var log = require('libs/log')(module);
 var errorHandler = require('error-handler');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+
+//Constructing the app
+var app = express();
+
+//Setting app properties
 var port = config.get('port');
 app.set('port', port);
+app.engine('ejs', require('ejs-locals')); // 'ejs' files will be processed with ejs-locals
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 //Creating HTTP Server
-
 var http = require('http');
 http.createServer(app).listen(port, function(){
   log.info("Express server is listening on port "+port);
@@ -34,13 +38,16 @@ app.use(bodyParser.urlencoded({// reads form sent with POST
 app.use(bodyParser.json()); // json data  - > req.body...
 app.use(cookieParser()); // parses req.headers -> req.cookies
 
-app.get('/', function(req, res, next){// request handler
-  res.render('index', {
-    body: '<b>Hello</b>'
-  });
-});
+
 
 app.use(express.static('public'));
+
+// Request handler
+app.get('/', function(req, res, next){
+  res.render('index', {
+
+  });
+});
 
 
 app.use(function(req, res, next){
@@ -80,3 +87,4 @@ app.use(function(req, res){
       res.status(500).send('Something broke!');
     }
 });
+

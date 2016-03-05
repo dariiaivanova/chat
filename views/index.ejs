@@ -1,13 +1,5 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Hello, World!</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <section class="container">
-      <h1>Hello, World!</h1>
-      <%-body%>
-    </section>
-  </body>
-</html>
+<% layout('layout/page.ejs')%>
+
+<%block('title', 'Hi, sweetie!');%>
+
+<p class="lead">Hello everybody!</p>
