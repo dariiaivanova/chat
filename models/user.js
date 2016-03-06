@@ -1,6 +1,6 @@
 var crypto = require('crypto');
 
-var mongoose = require('../libs/mongoose'),
+var mongoose = require('./../libs/mongoose'),
     Schema = mongoose.Schema;
 
 
@@ -42,5 +42,4 @@ schema.methods.checkPassword = function(password){
     return this.encryptPassword(password) === this.hashedPassword;
 };
 
-
-module.exports.User = mongoose.model('User', schema);
+exports.User =  mongoose.model('User', schema);
